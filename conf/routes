@@ -1,0 +1,5 @@
+# REST Services
+GET /                           controllers.FileUploadService.showMain
+POST /uploadXML                 controllers.FileUploadService.uploadXML
+
+GET     /assets/*file       controllers.Assets.versioned(path="/public", file: Asset)

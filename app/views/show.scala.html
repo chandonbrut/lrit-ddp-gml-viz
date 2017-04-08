@@ -1,0 +1,88 @@
+@main("DDP XML/GML Polygons") {
+<link href='@routes.Assets.versioned("leaflet/leaflet.css")' rel="stylesheet">
+<script src='@routes.Assets.versioned("leaflet/leaflet.js")'></script>
+<script src='@routes.Assets.versioned("javascripts/terraformer.min.js")'></script>
+<script src='@routes.Assets.versioned("javascripts/terraformer-wkt-parser.min.js")'></script>
+
+
+<div id="map" style="height: 90%; width: 100%;"></div>
+
+<input type='file' accept='text/plain' onchange='openFile(event)'><br>
+
+
+<script>
+    function sendContent(content) {
+        $.ajax({
+            url: '/uploadXML',
+            type: 'POST',
+            data: JSON.stringify({uploadedContent: content}),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: false,
+            success: function(msg) {
+             msg.polygons.forEach(function(polygon){addGeometry(polygon)});
+            },
+            error: function(msg) {
+             var returnObj = $.parseJSON(msg.responseText);
+             alert('Error: ' + returnObj.reason);
+            }
+        });
+    }
+
+    function openFile(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function() {
+          var text = reader.result;
+          sendContent(text);
+        }
+        reader.readAsText(input.files[0]);
+      }
+
+   function Ship(imo,marker) {
+        this.imo = imo;
+        this.marker = marker;
+    }
+
+function loadMap() {
+
+    function Position(lat,lon,timestamp) {
+        this.lat = lat;
+        this.lon = lon;
+        this.timestamp = timestamp;
+    }
+
+    window.map = L.map('map', {
+        center: [0, 0],
+        zoom: 3
+    });
+
+    window.map.ships = new Array();
+
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 20,
+      minZoom: 2
+    }).addTo(window.map);
+}
+
+  function addGeometry(geometry) {
+    var simAreaGeoJSON = Terraformer.WKT.parse(geometry.wkt);
+    var geo = L.geoJson(simAreaGeoJSON);
+    geo.addTo(window.map);
+    geo.setStyle({ color: 'blue' });
+
+    geo.on('mouseover', function(){
+        geo.setStyle({ color: 'red' });
+    });
+
+    geo.on('mouseout', function(){
+        geo.setStyle({ color: 'blue' });
+    });
+
+    geo.bindTooltip(geometry.areaId);
+  }
+
+  loadMap();
+</script>
+}

@@ -1,0 +1,7 @@
+body {
+  padding-top: 50px;
+  width: 100%;
+}
+
+#simulator-navbar { height: 50px;}
+#simulator-main { width: 100%; }
