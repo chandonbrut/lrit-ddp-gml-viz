@@ -8,6 +8,10 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 herokuAppName in Compile := "lrit-ddp-viz"
 
+herokuConfigVars in Compile := Map(
+	"JAVA_OPTS" -> "-Xmx512m -Xss2m -XX:+UseCompressedOops"
+)
+
 libraryDependencies ++= Seq(
 	"com.vividsolutions" % "jts" % "1.13",
 	"com.typesafe.play" %% "play-ws" % "2.5.10",
