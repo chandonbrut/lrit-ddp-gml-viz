@@ -6,6 +6,8 @@ scalaVersion := "2.11.7"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
+herokuAppName in Compile := "lrit-ddp-viz"
+
 libraryDependencies ++= Seq(
 	"com.vividsolutions" % "jts" % "1.13",
 	"com.typesafe.play" %% "play-ws" % "2.5.10",
