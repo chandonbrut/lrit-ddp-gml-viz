@@ -2,7 +2,7 @@ name := "LRIT DDP XML/GML PolygonViz"
 
 version := "1.0"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.13.0"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
@@ -14,6 +14,10 @@ herokuConfigVars in Compile := Map(
 
 libraryDependencies ++= Seq(
 	"com.vividsolutions" % "jts" % "1.13",
-	"com.typesafe.play" %% "play-ws" % "2.5.10",
+	"com.typesafe.play" %% "play-ws" % "2.7.3",
 	"org.scala-lang.modules" %% "scala-xml" % "1.0.2"
 )
+
+libraryDependencies += guice
+
+enablePlugins(PlayScala)

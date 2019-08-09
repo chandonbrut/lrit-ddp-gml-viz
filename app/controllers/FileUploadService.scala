@@ -3,15 +3,16 @@ package controllers
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import akka.util.Timeout
-import com.google.inject.Inject
 import ddp_sequencial.DDPPolygon
+import javax.inject.Inject
 import play.api.data.Form
 import play.api.libs.json.{JsError, Json}
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Action, InjectedController}
 import play.api.data.Forms.{mapping, text}
 import util.{FileProcessor, WrongDDPException}
 
 import scala.concurrent.duration._
+import scala.language.postfixOps
 
 /**
   * Created by jferreira on 4/8/17.
@@ -19,7 +20,7 @@ import scala.concurrent.duration._
 
 case class UploadedXML(uploadedContent:String)
 
-class FileUploadService @Inject() (implicit system:ActorSystem, materializer: Materializer) extends Controller {
+class FileUploadService @Inject() (implicit system:ActorSystem, materializer: Materializer) extends InjectedController {
 
   implicit val uploadedXMLReads = Json.reads[UploadedXML]
   implicit val uploadedXMLWrites = Json.writes[UploadedXML]
